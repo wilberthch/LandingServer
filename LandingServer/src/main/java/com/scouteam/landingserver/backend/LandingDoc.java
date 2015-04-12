@@ -6,6 +6,7 @@
 package com.scouteam.landingserver.backend;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  *
@@ -18,10 +19,11 @@ public class LandingDoc {
     private String DataMatrix;
     private Timestamp sendingTimeStamp;
 
-    public LandingDoc(String imageDump, String DataMatrix, Timestamp sendingTimeStamp) {
+    public LandingDoc(String imageDump, String DataMatrix) {
+        Date timeStamp = new Date();
         this.imageDump = imageDump;
         this.DataMatrix = DataMatrix;
-        this.sendingTimeStamp = sendingTimeStamp;
+        this.sendingTimeStamp = new Timestamp(timeStamp.getTime());
     }
 
     public String getId() {

@@ -10,6 +10,8 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import com.scouteam.landingserver.backend.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
                                                                                                                     
 
 /**
@@ -21,12 +23,24 @@ public class LandingWebServer {
 
     /**
      * This is a sample web service operation
+     * @param imageDump
+     * @param dataMatrix
+     * @return 
      */
-    @WebMethod(operationName = "hello")
-    public String hello(@WebParam(name = "name") String txt) {
-        LandingDoc doc = new LandingDoc(txt, txt, Timestamp.valueOf("2015-04-12 01:02:02"));
-        DatabaseSave saver = new DatabaseSave();
-        saver.createTodoItem(doc);
-        return "Hello " + txt + " !";
+    @WebMethod(operationName = "addLandingDoc")
+    public String addLandingDoc(@WebParam(name = "imageDump") String imageDump, @WebParam(name = "dataMatrix") String dataMatrix) {
+        LandingDoc doc = new LandingDoc(imageDump, dataMatrix);
+        DatabaseSave saver = DatabaseSave.getInstance();
+        doc = saver.createLandingDoc(doc);
+        return doc.getId() + " --- " + doc.getSendingTimeStamp().toString();
+    }
+    
+    @WebMethod(operationName = "getLandingDocs")
+    public LandingDoc[] getLandingDocs(@WebParam(name = "minutes") int minutes)
+    {
+        DatabaseSave saver = DatabaseSave.getInstance();
+        List<LandingDoc> landingDocs = saver.readLandingDocs(minutes);
+        
+        return (LandingDoc[]) landingDocs.toArray();
     }
 }
