@@ -41,6 +41,14 @@ public class LandingWebServer {
         DatabaseSave saver = DatabaseSave.getInstance();
         List<LandingDoc> landingDocs = saver.readLandingDocs(minutes);
         
-        return (LandingDoc[]) landingDocs.toArray();
+        LandingDoc[] landingDocsArray = new LandingDoc[landingDocs.size()];
+        
+        System.out.println(landingDocsArray.length + "<------------------------------------------------------------------");
+        for(LandingDoc lan : landingDocs)
+        {
+            System.out.println(lan.toString());
+        }
+        
+        return landingDocs.toArray(landingDocsArray);
     }
 }

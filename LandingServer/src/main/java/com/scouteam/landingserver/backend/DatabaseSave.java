@@ -149,15 +149,12 @@ public class DatabaseSave {
     public List<LandingDoc> readLandingDocs(int pMinutes) {
         
         Calendar calendar = Calendar.getInstance();
-        calendar.getTimeInMillis();
-        Timestamp timeCapture = new Timestamp(calendar.getTimeInMillis());
         calendar.add(Calendar.SECOND, -pMinutes);
         Timestamp newTimeCapture = new Timestamp(calendar.getTimeInMillis());
         
-        String query = String.format("SELECT * FROM root r WHERE r.entityType = 'landingDoc' AND (sendingTimeStamp BETWEEN '%s' AND '%s')", 
-                timeCapture.toString(), 
-                newTimeCapture.toString());
-        
+        String query = String.format("SELECT * FROM root r WHERE r.entityType = 'landingDoc' AND (r.sendingTimeStamp <= %d)", 
+                newTimeCapture.getTime());
+        System.out.println(query);
         List<LandingDoc> landingDocs = new ArrayList<LandingDoc>();
         // Retrieve the TodoItem documents
         List<Document> documentList = documentClient
